@@ -2,4 +2,5 @@
     <string name="app_name">Book Advisor</string>
     <string name="no_books_found">no books found</string>
     <string name="no_internet">no connection to Internet</string>
+    <string name="no_search">what are you looking for?</string>
 </resources>

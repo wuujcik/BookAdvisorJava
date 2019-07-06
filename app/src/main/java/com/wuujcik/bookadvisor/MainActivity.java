@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onClick(View v) {
                 Log.v(LOG_TAG, "TEST onClick button");
                 Log.v(LOG_TAG, BOOK_REQUEST_URL + " " + mSearchResult);
-                mAdapter.clear();
+//                mAdapter.clear();
                 EditText viewSearch = findViewById(R.id.view_search);
                 mSearchResult = viewSearch.getText().toString();
                 Log.v(LOG_TAG, "TEST onClick button after mSearchResult is updated");
@@ -132,62 +132,76 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.v(LOG_TAG, "TEST loadResults - start");
         Log.v(LOG_TAG, BOOK_REQUEST_URL + " " + mSearchResult);
 
-        // Create a new adapter that takes an empty list of books as input
-        mAdapter = new BookAdapter(this, new ArrayList<Book>());
-
-        // Get a reference to the ListView, and attach the adapter to the listView.
-        bookListView = findViewById(R.id.list);
-        bookListView.setAdapter(mAdapter);
-
-        //Check if there is internet connection
-        boolean connectedToInternet = checkConnectionStatus();
-        if (!connectedToInternet) {
-            Log.v(LOG_TAG, "TEST loadResults - no internet");
-            Log.v(LOG_TAG, BOOK_REQUEST_URL + " " + mSearchResult);
-
-            //sets the ProgressBar to gone if no internet
+        if (mSearchResult == null) {
+            //sets the ProgressBar to gone if no search provided yet
             mProgressBar = findViewById(R.id.progress_bar);
             mProgressBar.setVisibility(View.GONE);
 
-            //inform user of lack of internet connection
+            //inform user of search not being defined yet
             mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+            bookListView = findViewById(R.id.list);
             bookListView.setEmptyView(mEmptyStateTextView);
-            mEmptyStateTextView.setText(R.string.no_internet);
+            mEmptyStateTextView.setText(R.string.no_search);
         } else {
-            Log.v(LOG_TAG, "TEST loadResults - internet connected");
-            Log.v(LOG_TAG, BOOK_REQUEST_URL + " " + mSearchResult);
 
-            //When a list item is clicked, the website with more details about the book is opened
-            bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-                    Book currentBook = mAdapter.getItem(position);
-                    Log.v(LOG_TAG, "TEST loadResults - on item click - website");
-                    Log.v(LOG_TAG, BOOK_REQUEST_URL + " " + mSearchResult);
 
-                    if (currentBook.getmWeb() != null) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse(currentBook.getmWeb()));
-                        startActivity(intent);
+            // Create a new adapter that takes an empty list of books as input
+            mAdapter = new BookAdapter(this, new ArrayList<Book>());
+
+            // Get a reference to the ListView, and attach the adapter to the listView.
+            bookListView = findViewById(R.id.list);
+            bookListView.setAdapter(mAdapter);
+
+            //Check if there is internet connection
+            boolean connectedToInternet = checkConnectionStatus();
+            if (!connectedToInternet) {
+                Log.v(LOG_TAG, "TEST loadResults - no internet");
+                Log.v(LOG_TAG, BOOK_REQUEST_URL + " " + mSearchResult);
+
+                //sets the ProgressBar to gone if no internet
+                mProgressBar = findViewById(R.id.progress_bar);
+                mProgressBar.setVisibility(View.GONE);
+
+                //inform user of lack of internet connection
+                mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+                bookListView.setEmptyView(mEmptyStateTextView);
+                mEmptyStateTextView.setText(R.string.no_internet);
+            } else {
+                Log.v(LOG_TAG, "TEST loadResults - internet connected");
+                Log.v(LOG_TAG, BOOK_REQUEST_URL + " " + mSearchResult);
+
+                //When a list item is clicked, the website with more details about the book is opened
+                bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+                        Book currentBook = mAdapter.getItem(position);
+                        Log.v(LOG_TAG, "TEST loadResults - on item click - website");
+                        Log.v(LOG_TAG, BOOK_REQUEST_URL + " " + mSearchResult);
+
+                        if (currentBook.getmWeb() != null) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(currentBook.getmWeb()));
+                            startActivity(intent);
+                        }
+
                     }
+                });
 
-                }
-            });
+                mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+                bookListView.setEmptyView(mEmptyStateTextView);
 
-            mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
-            bookListView.setEmptyView(mEmptyStateTextView);
+                // Get a reference to the LoaderManager, in order to interact with loaders.
+                LoaderManager loaderManager = getLoaderManager();
+                Log.v(LOG_TAG, "TEST under loaderManager command");
+                Log.v(LOG_TAG, BOOK_REQUEST_URL + " " + mSearchResult);
 
-            // Get a reference to the LoaderManager, in order to interact with loaders.
-            LoaderManager loaderManager = getLoaderManager();
-            Log.v(LOG_TAG, "TEST under loaderManager command");
-            Log.v(LOG_TAG, BOOK_REQUEST_URL + " " + mSearchResult);
-
-            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
-            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
-            // because this activity implements the LoaderCallbacks interface).
-            loaderManager.initLoader(BOOK_LOADER_ID, null, this);
-            Log.v(LOG_TAG, "TEST under initLoader" + " " + mSearchResult);
-            Log.v(LOG_TAG, BOOK_REQUEST_URL);
+                // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+                // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+                // because this activity implements the LoaderCallbacks interface).
+                loaderManager.initLoader(BOOK_LOADER_ID, null, this);
+                Log.v(LOG_TAG, "TEST under initLoader" + " " + mSearchResult);
+                Log.v(LOG_TAG, BOOK_REQUEST_URL);
+            }
         }
     }
 }

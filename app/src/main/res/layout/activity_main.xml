@@ -60,14 +60,14 @@
         android:id="@+id/empty_view"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:textAppearance="?android:textAppearanceMedium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_search"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        tools:text="no items found"
-        android:textAppearance="?android:textAppearanceMedium" />
+        app:layout_constraintVertical_bias="0.5"
+        tools:text="no items found" />
 
 
 </android.support.constraint.ConstraintLayout>
