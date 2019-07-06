@@ -2,14 +2,14 @@ package com.wuujcik.bookadvisor;
 
 public class Book {
 
-    private String mAuthor;
+    private String[] mAuthor;
     private String mTitle;
     private String mDescription;
     private double mPrice;
     private String mWeb;
     private String mImage;
 
-    public Book (String author, String title, String description, double price, String web, String image){
+    public Book (String[] author, String title, String description, double price, String web, String image){
         mAuthor = author;
         mTitle = title;
         mDescription = description;
@@ -18,7 +18,7 @@ public class Book {
         mImage = image;
     }
 
-    public String getmAuthor() {
+    public String[] getmAuthor() {
         return mAuthor;
     }
 

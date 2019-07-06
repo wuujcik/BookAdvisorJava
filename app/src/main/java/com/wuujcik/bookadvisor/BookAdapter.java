@@ -1,19 +1,15 @@
 package com.wuujcik.bookadvisor;
 
 import android.app.Activity;
-import android.graphics.drawable.GradientDrawable;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
+
 
 public class BookAdapter extends ArrayAdapter<Book> {
 
@@ -36,13 +32,14 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
         /** This part of adapter takes care of the author*/
 
-        String currentAuthor = currentBook.getmAuthor();
+        String[] currentAuthorArr = currentBook.getmAuthor();
 
+        String currentAuthor = Arrays.toString(currentAuthorArr);
 
         // Find the TextView in the list_item.xml layout with the ID element_author
         TextView authorView = (TextView) listItemView.findViewById(R.id.element_author);
         // Display the author of the current book in that TextView
-        authorView.setText(currentAuthor);
+        authorView.setText(currentAuthor.substring(3, currentAuthor.length()-3));
 
         /** This part of adapter takes care of the title*/
 

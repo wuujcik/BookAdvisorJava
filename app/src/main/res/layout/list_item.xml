@@ -3,28 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_margin="16dp">
+    android:layout_margin="16dp"
+    android:orientation="horizontal">
 
 
-    <ImageViewView
+    <ImageView
         android:id="@+id/element_image"
+        android:src="@android:drawable/ic_delete"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:layout_marginStart="16dp"/>
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_margin="16dp"
         android:layout_marginStart="16dp"
-        android:orientation="vertical"
-        android:layout_margin="16dp">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/element_author"
@@ -35,7 +36,7 @@
             android:maxLines="1"
             android:textAllCaps="true"
             android:textSize="12sp"
-            tools:text="authors"/>
+            tools:text="authors" />
 
         <TextView
             android:id="@+id/element_title"
@@ -46,17 +47,17 @@
             android:maxLines="1"
             android:textAllCaps="true"
             android:textSize="16sp"
-            tools:text="title that can be a few words"/>
+            tools:text="title that can be a few words" />
 
         <TextView
             android:id="@+id/element_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
             android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
             android:maxLines="5"
             android:textSize="16sp"
-            tools:text="Long placeholder location that should wrap to more than 5 lines of text hkshksgtrgrtsakjshkjwhdkajh edkjehfsrtsrgdkjheekjfhrkfhkj ehkfwhekjddwqdwefhkwehd bkdsawhkshwqkdhwq khdqwhkudaghsuwqhuwkhqw"/>
+            tools:text="Long placeholder location that should wrap to more than 5 lines of text hkshksgtrgrtsakjshkjwhdkajh edkjehfsrtsrgdkjheekjfhrkfhkj ehkfwhekjddwqdwefhkwehd bkdsawhkshwqkdhwq khdqwhkudaghsuwqhuwkhqw" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,18 +71,17 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center|start"
                 android:textSize="16sp"
-                tools:text="Price: 450 CZK"/>
+                tools:text="Price: 450 CZK" />
 
             <Button
                 android:id="@+id/element_url"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="16sp"
-                android:layout_gravity="end"
                 android:text="Buy"
-                />
+                android:textSize="16sp" />
         </LinearLayout>
 
     </LinearLayout>

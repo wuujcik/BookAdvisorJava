@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Helper methods related to requesting and receiving earthquake data from USGS.
+ * Helper methods related to requesting and receiving earthquake data from API.
  */
 public final class QueryUtils {
 
@@ -73,7 +73,7 @@ public final class QueryUtils {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
+            Log.e(LOG_TAG, "Problem retrieving the books JSON results.", e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -144,10 +144,24 @@ public final class QueryUtils {
                 //extract from the currentBookObject a JSONObject associated with key "volumeInfo"
                 JSONObject volumeInfo = currentBookObject.getJSONObject("volumeInfo");
 
-                //Extract the values from volumeInfo for the key: title, authors and description
+                //Extract the values from volumeInfo for the key: title
                 String title = volumeInfo.getString("title");
-                String author = volumeInfo.getString("authors");
-                String description = volumeInfo.getString("description");
+
+                //Extract the values from volumeInfo for the key: authors
+ //               String author = volumeInfo.getString("authors");
+
+                //String[] author;
+                JSONArray authors = volumeInfo.getJSONArray("authors");
+                String[] author = authors.toString().replace("\",\"", "; ").split(",");
+
+
+
+                String description;
+                try{
+                description = volumeInfo.getString("description");
+                } catch(Exception oe){
+                    description = "";
+                }
 
 
                 //extract from the "volumeInfo" a JSONObject associated with key "imageLinks"
@@ -160,23 +174,29 @@ public final class QueryUtils {
                 //extract from the currentBookObject a JSONObject associated with key "saleInfo"
                 JSONObject saleInfo = currentBookObject.getJSONObject("saleInfo");
 
-                //Extract the values from saleInfo for the key: buyLink
-                String web = saleInfo.getString("buyLink");
+                //Extract the values from saleInfo for the key: saleability
+                //in case the book is not for sale, return early with no price or link available
+                if (saleInfo.getString("saleability").equals("FOR_SALE")) {
 
-                //extract from the "saleInfo" a JSONObject associated with key "retailPrice"
-                JSONObject retailPrice = saleInfo.getJSONObject("retailPrice");
-                //Extract the values from retailPrice for the key: amount
-                Double price = retailPrice.getDouble("amount");
+                    //Extract the values from saleInfo for the key: buyLink
+                    String web = saleInfo.getString("buyLink");
+                    //extract from the "saleInfo" a JSONObject associated with key "retailPrice"
+                    JSONObject retailPrice = saleInfo.getJSONObject("retailPrice");
+                    //Extract the values from retailPrice for the key: amount
+                    double price = retailPrice.getDouble("amount");
 
-                books.add(new Book(author, title, description, price, web, image));
-            }
+                    books.add(new Book(author, title, description, price, web, image));
+
+                } else if (saleInfo.getString("saleability").equals("NOT_FOR_SALE")) {
+                    books.add(new Book(author, title, description, 0, "not available",image));
+            }}
 
 
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
             // catch the exception here, so the app doesn't crash. Print a log message
             // with the message from the exception.
-            Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
+            Log.e("QueryUtils", "Problem parsing the books JSON results", e);
         }
 
         // Return the list of books
